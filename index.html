@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="./bootstrap_5_0_2_dist/css/bootstrap.min.css">
+  <style>
+    .btn-outline-secondary:hover {
+      background-color: transparent !important;
+      color: #6c757d;
+      /* keep original text color */
+      border-color: #6c757d;
+    }
+
+    .btn:focus,
+    .btn:active,
+    .btn:focus-visible {
+      box-shadow: none !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -14,7 +28,7 @@
 
 </body>
 
-<body class="hold-transition sidebar-mini">
+<body class="">
   <!-- Site wrapper -->
   <div class="wrapper">
 
@@ -23,54 +37,65 @@
     <div class="content-wrapper">
 
 
-      <!-- Main content -->
-      <section class="content">
-
-        <!-- Default box -->
-        <div class="card">
-
-          <div class="card-body">
-
-            <div class="form-group">
-              <label></label>
-              <textarea rows="10" id="input_textarea" class="form-control"
-                placeholder="Matinni shu yerga kiriting ..."></textarea>
-            </div>
-            <label></label>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="d-grid gap-2">
-                  <button id="translate_btn_kl" class="btn btn-success" type="button">Kiril -> Lotin</button>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="d-grid gap-2">
-                  <button id="translate_btn_lk" class="btn btn-primary" type="button">Lotin -> Kiril</button>
-                </div>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-              <label></label>
-              <textarea rows="10" id="output_textarea" class="form-control"
-                placeholder="Natijani shu yerga chiqadi ..."></textarea>
-            </div>
-          </div>
-          <!-- /.card-body -->
-
+      <br>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <button type="button" id="switch_kiril_latin" class="btn btn-success">Кирилл-Латин</button>
+          <button type="button" id="switch_latin_kiril" class="btn btn-outline-secondary">Латин-Кирилл</button>
+          <button type="button" id="switch_sentence_case" class="btn btn-outline-secondary"> Sentence case</button>
+          <button type="button" id="switch_lower_case" class="btn btn-outline-secondary"> lower case</button>
+          <button type="button" id="switch_upper_case" class="btn btn-outline-secondary"> UPPER CASE</button>
+          <button type="button" id="switch_capitalized_case" class="btn btn-outline-secondary"> Capitalized
+            Case</button>
         </div>
-        <!-- /.card -->
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
 
-      </section>
-      <!-- /.content -->
+          <label for="from-text">Введите текст (Макс. длина: 5000)</label>
+          <textarea name="from_text" id="input_textarea" maxlength="5000" cols="30" rows="10"
+            class="form-control"></textarea>
+          <div class="form-text text-right text-muted" id="form-text-info">
+            <small id="from-text-current">0</small>/<small>5000</small>
+          </div>
+
+
+          <button id="convert_btn" class="btn btn-primary btn-lg form-send-btn" type="submit">
+            Конвертировать </button>
+          <br>
+        </div>
+        <div class="col-md-5">
+
+          <label for="to-text">Результат</label>
+          <textarea name="to-text" id="output_textarea" cols="30" rows="10" class="form-control" readonly=""
+            style="height: 250px;"></textarea>
+          <div class="form-text text-right text-muted" id="to-text-info">
+            <small>&nbsp;</small>
+          </div>
+
+
+          <button class="btn btn-primary btn-lg" id="copy_btn" type="button" data-copy="to-text"
+            data-copied-text="Cкопировано">
+            Cкопировать </button>
+
+          <br>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+
+
     </div>
-    <!-- /.content-wrapper -->
+
 
   </div>
-  <!-- ./wrapper -->
 
-  <script src="./bootstrap_5_0_2_dist//js/bootstrap.min.js"></script>
+  <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3">
+  </div>
+  <script src="./bootstrap_5_0_2_dist/js/bootstrap.min.js"></script>
+
   <script src="./js/translate.js"></script>
 
 </body>
