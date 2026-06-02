@@ -1,17 +1,155 @@
-const translate_btn_kl = document.getElementById('translate_btn_kl');
-const translate_btn_lk = document.getElementById('translate_btn_lk');
+
+
+
 const input_textarea = document.getElementById('input_textarea');
 const output_textarea = document.getElementById('output_textarea');
 
 
+const switch_kiril_latin = document.getElementById('switch_kiril_latin');
+const switch_latin_kiril = document.getElementById('switch_latin_kiril');
+const switch_sentence_case = document.getElementById('switch_sentence_case');
+const switch_lower_case = document.getElementById('switch_lower_case');
+const switch_upper_case = document.getElementById('switch_upper_case');
+const switch_capitalized_case = document.getElementById('switch_capitalized_case');
 
 
-translate_btn_kl.onclick = () =>{
-    output_textarea.value = kiril_lotin(input_textarea.value);
+const convert_btn = document.getElementById('convert_btn');
+const copy_btn = document.getElementById("copy_btn");
+
+
+sessionStorage.setItem("status", "kiril-latin");
+
+switch_kiril_latin.onclick = function () {
+    switch_kiril_latin.className = 'btn btn-success';
+    switch_latin_kiril.className = 'btn btn-outline-secondary';
+    switch_lower_case.className = 'btn btn-outline-secondary';
+    switch_upper_case.className = 'btn btn-outline-secondary';
+    switch_capitalized_case.className = 'btn btn-outline-secondary';
+    switch_sentence_case.className = 'btn btn-outline-secondary';
+    sessionStorage.setItem("status", "kiril-latin");
+    convert_text();
 };
-translate_btn_lk.onclick = () =>{
-    output_textarea.value = lotin_kiril(input_textarea.value);
+
+switch_latin_kiril.onclick = function () {
+
+    switch_latin_kiril.className = 'btn btn-success';
+    switch_kiril_latin.className = 'btn btn-outline-secondary';
+    switch_lower_case.className = 'btn btn-outline-secondary';
+    switch_upper_case.className = 'btn btn-outline-secondary';
+    switch_capitalized_case.className = 'btn btn-outline-secondary';
+    switch_sentence_case.className = 'btn btn-outline-secondary';
+
+    sessionStorage.setItem("status", "latin-kiril");
+    convert_text();
 };
+
+switch_lower_case.onclick = function () {
+
+    switch_lower_case.className = 'btn btn-success';
+    switch_latin_kiril.className = 'btn btn-outline-secondary';
+    switch_kiril_latin.className = 'btn btn-outline-secondary';
+    switch_upper_case.className = 'btn btn-outline-secondary';
+    switch_capitalized_case.className = 'btn btn-outline-secondary';
+    switch_sentence_case.className = 'btn btn-outline-secondary';
+
+    sessionStorage.setItem("status", "lower-case");
+    convert_text();
+};
+
+switch_upper_case.onclick = function () {
+
+    switch_upper_case.className = 'btn btn-success';
+    switch_latin_kiril.className = 'btn btn-outline-secondary';
+    switch_kiril_latin.className = 'btn btn-outline-secondary';
+    switch_lower_case.className = 'btn btn-outline-secondary';
+    switch_capitalized_case.className = 'btn btn-outline-secondary';
+    switch_sentence_case.className = 'btn btn-outline-secondary';
+
+    sessionStorage.setItem("status", "upper-case");
+    convert_text();
+};
+
+switch_capitalized_case.onclick = function () {
+
+    switch_capitalized_case.className = 'btn btn-success';
+    switch_latin_kiril.className = 'btn btn-outline-secondary';
+    switch_kiril_latin.className = 'btn btn-outline-secondary';
+    switch_lower_case.className = 'btn btn-outline-secondary';
+    switch_upper_case.className = 'btn btn-outline-secondary';
+    switch_sentence_case.className = 'btn btn-outline-secondary';
+
+    sessionStorage.setItem("status", "capitalized-case");
+    convert_text();
+};
+
+
+
+switch_sentence_case.onclick = function () {
+
+    switch_sentence_case.className = 'btn btn-success';
+    switch_latin_kiril.className = 'btn btn-outline-secondary';
+    switch_kiril_latin.className = 'btn btn-outline-secondary';
+    switch_lower_case.className = 'btn btn-outline-secondary';
+    switch_upper_case.className = 'btn btn-outline-secondary';
+    switch_capitalized_case.className = 'btn btn-outline-secondary';
+
+    sessionStorage.setItem("status", "sentence-case");
+    convert_text();
+};
+
+
+
+
+
+function convert_text() {
+    let action = sessionStorage.getItem("status");
+    if (action == 'kiril-latin') {
+        output_textarea.value = kiril_lotin(input_textarea.value);
+    } else if (action == 'latin-kiril') {
+        output_textarea.value = lotin_kiril(input_textarea.value);
+    } else if (action == 'lower-case') {
+        output_textarea.value = input_textarea.value.toLowerCase();
+    } else if (action == 'upper-case') {
+        output_textarea.value = input_textarea.value.toUpperCase();
+    } else if (action == 'sentence-case') {
+        output_textarea.value = toMultiSentenceCase(input_textarea.value);
+    } else if (action == 'capitalized-case') {
+        output_textarea.value = capitalizeWords(input_textarea.value);
+    };
+    console.log(1)
+}
+
+input_textarea.onkeyup = convert_text;
+
+convert_btn.onclick = convert_text;
+
+copy_btn.onclick = function () {
+    try {
+        copyToClipboard(output_textarea.value);
+        showToast('Скопировано!');
+    } catch (error) {
+        showToast('ошибка!', 'danger');
+    }
+
+}
+
+
+// translate_btn_kl.onclick = () =>{
+//     output_textarea.value = kiril_lotin(input_textarea.value);
+// };
+// translate_btn_lk.onclick = () =>{
+//     output_textarea.value = lotin_kiril(input_textarea.value);
+// };
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text)
+        .then(() => {
+            console.log('Text successfully copied!');
+        })
+        .catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+}
 
 
 function kiril_lotin(input) {
@@ -244,3 +382,53 @@ function lotin_kiril(input) {
 
 };
 
+function toMultiSentenceCase(str) {
+    return str
+        .toLowerCase()
+        .replace(/(^\s*\w|[\.\!\?]\s*\w)/g, match => match.toUpperCase());
+};
+
+
+function capitalizeWords(text) {
+    return text
+        .split(' ')
+        .map(word =>
+            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        )
+        .join(' ');
+};
+
+
+function showToast(message, type = 'success') {
+    const toastEl = document.createElement('div');
+
+    const classes = {
+        success: 'bg-success text-white',
+        danger: 'bg-danger text-white',
+        warning: 'bg-warning text-dark',
+        info: 'bg-info text-dark'
+    };
+
+    toastEl.className = `toast ${classes[type]}`;
+
+    toastEl.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button"
+                    class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"></button>
+        </div>
+    `;
+
+    document.getElementById('toastContainer').appendChild(toastEl);
+
+    const toast = new bootstrap.Toast(toastEl, {
+        delay: 2000
+    });
+
+    toast.show();
+
+    toastEl.addEventListener('hidden.bs.toast', () => {
+        toastEl.remove();
+    });
+}
